@@ -1,5 +1,44 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const person = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "アロ",
+  "url": "https://kusuri-kabu-note.com/about",
+  "description": "薬剤師・ファイナンシャル・プランニング技能士2級。歯科医療法人事務長・元生命保険外交員としての実務経験を持つ、医療セクター投資情報サイト「くすりの株ノート」運営者。",
+  "hasCredential": [
+    {
+      "@type": "EducationalOccupationalCredential",
+      "name": "薬剤師免許",
+      "dateCreated": "2012"
+    },
+    {
+      "@type": "EducationalOccupationalCredential",
+      "name": "ファイナンシャル・プランニング技能士2級",
+      "dateCreated": "2021"
+    }
+  ],
+  "hasOccupation": [
+    {
+      "@type": "Occupation",
+      "name": "薬剤師",
+      "occupationLocation": { "@type": "Country", "name": "日本" }
+    },
+    {
+      "@type": "Occupation",
+      "name": "歯科医療法人事務長",
+      "occupationLocation": { "@type": "Country", "name": "日本" }
+    }
+  ],
+  "knowsAbout": [
+    "医療セクター株式投資",
+    "医薬品業界",
+    "株主優待",
+    "マクロ経済分析",
+    "ファイナンシャルプランニング"
+  ]
+};
 ---
 
 <BaseLayout
@@ -9,62 +48,65 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   <script
     slot="head"
     type="application/ld+json"
-    set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "アロ",
-      "url": "https://kusuri-kabu-note.com/about",
-      "description": "薬剤師・ファイナンシャル・プランニング技能士2級。歯科医療法人事務長・元生命保険外交員としての実務経験を持つ。医療セクターの株・優待情報を集約するサイト「くすりの株ノート」運営者。",
-      "hasCredential": [
-        {
-          "@type": "EducationalOccupationalCredential",
-          "name": "薬剤師免許"
-        },
-        {
-          "@type": "EducationalOccupationalCredential",
-          "name": "ファイナンシャル・プランニング技能士2級"
-        }
-      ]
-    })}
+    set:html={JSON.stringify(person)}
   />
 
   <h1>運営者情報</h1>
 
+  <div aria-label="運営者アバター">
+    <svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="アロのイニシャルアバター">
+      <circle cx="40" cy="40" r="40" fill="#2c7a7b" />
+      <text x="50%" y="54%" dominant-baseline="central" text-anchor="middle" fill="white" font-size="34" font-family="sans-serif">ア</text>
+    </svg>
+  </div>
+
   <section>
-    <h2>プロフィール</h2>
-    <p>はじめまして、アロと申します。「くすりの株ノート」を運営しています。</p>
+    <h2>自己紹介</h2>
+    <p>はじめまして。本サイトの運営者、アロです。薬剤師として医療現場に立ち、生命保険外交員として家計とリスクの設計に関わってきました。現在は医療法人の事務長として、経営と医療の両側を見る立場にあります。ファイナンシャル・プランニング技能士2級も取得し、医療セクターの株式情報を一次情報ベースで集めています。家族と長く付き合える資産形成のかたちを、現場の言葉で記録していくサイトです。どうぞよろしくお願いします。</p>
   </section>
 
   <section>
     <h2>保有資格</h2>
     <ul>
-      <li>薬剤師</li>
-      <li>ファイナンシャル・プランニング技能士2級（FP2級）</li>
+      <li>
+        <strong>薬剤師免許</strong>（2012年取得）<br />
+        厚生労働大臣免許。調剤・服薬指導・医薬品管理に従事。
+      </li>
+      <li>
+        <strong>ファイナンシャル・プランニング技能士2級</strong>（2021年取得）<br />
+        国家技能検定。金融資産・保険・税務・不動産・相続の横断的知識を保有。
+      </li>
     </ul>
   </section>
 
   <section>
-    <h2>実務経験</h2>
+    <h2>職務経験</h2>
     <ul>
-      <li>薬剤師として医療現場に従事</li>
-      <li>歯科医療法人事務長として経営・財務管理に携わる</li>
-      <li>元生命保険外交員として保険・金融商品の知識を習得</li>
+      <li>
+        <strong>歯科医療法人事務長</strong>（約3年間・現職）<br />
+        経営補佐・人事・薬事を担当。診療報酬の仕組みと医療法人の財務構造を実務で把握。
+      </li>
+      <li>
+        <strong>生命保険外交員</strong>（2019年〜2021年）<br />
+        外貨建て生命保険・変額保険・医療保険等を取扱。家計のリスク設計と金融商品の実務知識を習得。
+      </li>
     </ul>
   </section>
 
   <section>
-    <h2>投資への取り組み</h2>
-    <p>FRED（米セントルイス連邦準備銀行の経済データベース）・Yahoo Finance・TradingViewを組み合わせたマクロ経済監視フレームワークを自己運用しています。医療現場での実務経験を踏まえ、医療セクターの事業構造や収益モデルについて独自の視点を持っています。</p>
+    <h2>投資実務</h2>
+    <p>FRED（米セントルイス連邦準備銀行の経済データベース）・Yahoo Finance・TradingViewを組み合わせたマクロ経済監視フレームワークを2025年より運用しています。以下4指標を自動化ツールで毎週確認しています。</p>
+    <ul>
+      <li><strong>Sahmルール</strong>：米国の景気後退入りを失業率の変化率で判定する指標</li>
+      <li><strong>HYスプレッド</strong>：ハイイールド債と国債の利回り格差。信用市場のリスク許容度を計測</li>
+      <li><strong>半導体ファンダメンタル</strong>：SOX指数構成企業の売上・在庫サイクルを追跡</li>
+      <li><strong>SOXテクニカル</strong>：フィラデルフィア半導体株指数の移動平均・出来高分析</li>
+    </ul>
   </section>
 
   <section>
-    <h2>このサイトについて</h2>
-    <p>医薬品・医療機器・ドラッグストアなど医療セクターの株式・株主優待情報を集約し、医療現場視点からの一般的な考察を提供することを目的としています。</p>
-    <p>薬剤師としての専門知識とFP2級の金融知識を組み合わせ、医療セクター投資に関心を持つ方の情報収集の一助となることを目指しています。</p>
-  </section>
-
-  <section>
-    <h2>免責事項</h2>
-    <p>本サイトは情報提供を目的としており、<strong>個別銘柄の売買推奨・目標株価の提示・ポートフォリオ構成助言など、投資助言業に該当する情報提供は一切行いません。</strong>投資判断はご自身の責任において行ってください。</p>
+    <h2>本サイトの編集方針</h2>
+    <p>本サイトは医薬品・医療機器・ドラッグストアなど医療セクターの株式・株主優待情報を集約し、一般的な解説を提供することのみを目的としています。</p>
+    <p><strong>個別銘柄の売買推奨・目標株価の提示・ポートフォリオ構成助言など、投資助言業に該当する情報提供は一切行いません。</strong>掲載情報は各社IRなどの一次情報をもとに運営者が整理したものであり、情報の正確性・完全性を保証するものではありません。投資判断はご自身の責任において行ってください。</p>
   </section>
 </BaseLayout>
