@@ -1,17 +1,9 @@
 ---
-
+import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="トップ">
+  <h1>くすりの株ノート</h1>
+  <p>医療セクターの株・優待情報を、薬剤師・FP2級の視点で集約するサイトです。</p>
+  <p>個別銘柄の売買推奨・ポートフォリオ助言は行っておりません。情報収集の参考としてご活用ください。</p>
+</BaseLayout>

@@ -1,0 +1,49 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+const { title, description = "医療セクターの株・優待情報を薬剤師・FP2級の視点で集約するサイト" } = Astro.props;
+---
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <title>{title} | くすりの株ノート</title>
+  </head>
+  <body>
+    <header>
+      <a href="/">くすりの株ノート</a>
+      <nav>
+        <a href="/">トップ</a>
+        <a href="/about">運営者情報</a>
+        <a href="/privacy">プライバシーポリシー</a>
+        <a href="/disclaimer">免責事項</a>
+        <a href="/contact">お問い合わせ</a>
+      </nav>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer>
+      <p>本サイトはアフィリエイト広告を含みます。</p>
+      <p>本サイトは情報提供を目的とし、投資助言業に該当する個別銘柄の推奨・売買指示・ポートフォリオ構成助言を行うものではありません。投資判断はご自身の責任において行ってください。</p>
+      <p>運営者：薬剤師 / ファイナンシャル・プランニング技能士2級</p>
+      <nav>
+        <a href="/">トップ</a>
+        <a href="/about">運営者情報</a>
+        <a href="/privacy">プライバシーポリシー</a>
+        <a href="/disclaimer">免責事項</a>
+        <a href="/contact">お問い合わせ</a>
+      </nav>
+      <p>&copy; {new Date().getFullYear()} くすりの株ノート</p>
+    </footer>
+  </body>
+</html>
