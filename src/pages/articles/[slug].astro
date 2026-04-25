@@ -1,0 +1,42 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articles');
+  return articles.map(article => ({
+    params: { slug: article.slug },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+const { Content } = await article.render();
+---
+
+<BaseLayout title={article.data.title} description={article.data.description}>
+  <article>
+    <header>
+      <h1>{article.data.title}</h1>
+      <p>
+        公開日：<time datetime={article.data.publishDate.toISOString()}>
+          {article.data.publishDate.toLocaleDateString('ja-JP')}
+        </time>
+        {article.data.updateDate && (
+          <>
+            　更新日：<time datetime={article.data.updateDate.toISOString()}>
+              {article.data.updateDate.toLocaleDateString('ja-JP')}
+            </time>
+          </>
+        )}
+      </p>
+    </header>
+
+    <Content />
+
+    <footer>
+      <hr />
+      <p><strong>免責事項：</strong>本記事は情報提供を目的としており、個別銘柄の売買推奨・目標株価の提示・ポートフォリオ構成助言など投資助言業に該当する情報提供は一切行いません。掲載データは各社IR等の一次情報をもとに運営者が整理したものです。情報の正確性・完全性を保証するものではなく、投資判断はご自身の責任において行ってください。</p>
+    </footer>
+  </article>
+</BaseLayout>
