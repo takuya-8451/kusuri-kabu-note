@@ -1,0 +1,50 @@
+---
+// src/components/AffiliateBlock.astro
+// ASP管理画面から取得した実リンクに差し替えること
+---
+<section class="affiliate-block">
+  <p class="affiliate-label">本記事はアフィリエイト広告を含みます</p>
+  <h2>投資口座の開設先（参考）</h2>
+  <p>
+    情報収集と並行して証券口座の開設を検討される方向けに、
+    主要ネット証券をご案内しています。
+    口座開設・維持に費用はかかりません（2025年時点・各社公式情報による）。
+  </p>
+  <ul>
+    <!-- ★ 以下をASP管理画面から取得した実リンクに差し替える ★ -->
+    <!-- 例：<li><a href="【SBI証券のASPリンク】" rel="nofollow sponsored">SBI証券 ― 医療・製薬株の取扱い銘柄数が豊富</a></li> -->
+    <!-- 例：<li><a href="【楽天証券のASPリンク】" rel="nofollow sponsored">楽天証券 ― ポイント投資対応</a></li> -->
+    <!-- 例：<li><a href="【マネックス証券のASPリンク】" rel="nofollow sponsored">マネックス証券 ― 米国株（JNJ等）の取引手数料が低水準</a></li> -->
+  </ul>
+  <p class="affiliate-note">
+    ※投資には元本割れのリスクがあります。投資判断は必ずご自身の責任のもとで行ってください。
+  </p>
+</section>
+
+<style>
+  .affiliate-block {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 1.25rem 1.5rem;
+    margin: 2rem 0;
+    background: #f9f9f9;
+  }
+  .affiliate-label {
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+  }
+  .affiliate-block h2 {
+    font-size: 1.1rem;
+    margin-top: 0;
+  }
+  .affiliate-block ul {
+    padding-left: 1.25rem;
+  }
+  .affiliate-note {
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 1rem;
+    margin-bottom: 0;
+  }
+</style>
