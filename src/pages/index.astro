@@ -1,9 +1,34 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const articles = await getCollection('articles');
+const latestArticles = articles
+  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime())
+  .slice(0, 3);
 ---
 
 <BaseLayout title="トップ">
   <h1>くすりの株ノート</h1>
   <p>医療セクターの株・優待情報を、薬剤師・FP2級の視点で集約するサイトです。</p>
   <p>個別銘柄の売買推奨・ポートフォリオ助言は行っておりません。情報収集の参考としてご活用ください。</p>
+
+  <section>
+    <h2>最新記事</h2>
+    <ul>
+      {latestArticles.map((article) => (
+        <li>
+          <a href={`/articles/${article.id}`}>{article.data.title}</a>
+          <br />
+          <small>
+            <time datetime={article.data.publishDate.toISOString()}>
+              {article.data.publishDate.toLocaleDateString('ja-JP')}
+            </time>
+            　{article.data.category}
+          </small>
+        </li>
+      ))}
+    </ul>
+    <a href="/articles">記事一覧をすべて見る →</a>
+  </section>
 </BaseLayout>

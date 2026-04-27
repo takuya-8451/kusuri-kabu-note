@@ -1,0 +1,30 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const articles = await getCollection('articles');
+const sorted = articles.sort((a, b) =>
+  b.data.publishDate.getTime() - a.data.publishDate.getTime()
+);
+---
+
+<BaseLayout title="記事一覧" description="医療セクターの株・優待情報に関する記事の一覧です。">
+  <h1>記事一覧</h1>
+  <ul>
+    {sorted.map((article) => (
+      <li>
+        <a href={`/articles/${article.id}`}>
+          <strong>{article.data.title}</strong>
+        </a>
+        <br />
+        <small>
+          <time datetime={article.data.publishDate.toISOString()}>
+            {article.data.publishDate.toLocaleDateString('ja-JP')}
+          </time>
+          　{article.data.category}
+        </small>
+        <p>{article.data.description}</p>
+      </li>
+    ))}
+  </ul>
+</BaseLayout>
