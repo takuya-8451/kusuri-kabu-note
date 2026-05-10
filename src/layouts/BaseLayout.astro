@@ -16,6 +16,7 @@ const isProd = import.meta.env.PROD;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
+    <link rel="canonical" href={Astro.url.href} />
     <title>{title} | くすりの株ノート</title>
     <slot name="head" />
     {isProd && GA_ID && (

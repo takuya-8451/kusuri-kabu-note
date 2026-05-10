@@ -13,7 +13,7 @@ const sorted = articles.sort((a, b) =>
   <ul>
     {sorted.map((article) => (
       <li>
-        <a href={`/articles/${article.id}`}>
+        <a href={`/articles/${article.id}/`}>
           <strong>{article.data.title}</strong>
         </a>
         <br />

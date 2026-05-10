@@ -18,7 +18,7 @@ const latestArticles = articles
     <ul>
       {latestArticles.map((article) => (
         <li>
-          <a href={`/articles/${article.id}`}>{article.data.title}</a>
+          <a href={`/articles/${article.id}/`}>{article.data.title}</a>
           <br />
           <small>
             <time datetime={article.data.publishDate.toISOString()}>
