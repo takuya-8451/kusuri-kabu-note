@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AffiliateBlock from '../../components/AffiliateBlock.astro';
+import AffiliateBlockPharmacist from '../../components/AffiliateBlockPharmacist.astro';
 
 export async function getStaticPaths() {
   const articles = await getCollection('articles');
@@ -36,6 +37,7 @@ const { Content } = await render(article);
     <Content />
 
     <AffiliateBlock />
+    {article.data.category === '制度解説' && <AffiliateBlockPharmacist />}
 
     <footer>
       <hr />

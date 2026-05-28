@@ -1,0 +1,63 @@
+---
+// src/components/AffiliateBlockPharmacist.astro
+// もしもアフィリエイト：レバウェル薬剤師（新規会員登録 ¥30,000）
+// TODO: 下記 href と img src をもしもアフィリエイト管理画面で発行したリンクに差し替える
+---
+<section class="affiliate-block-pharmacist">
+  <p class="affiliate-label">アフィリエイト広告を含みます</p>
+  <h3>薬剤師・医療従事者の転職をお考えの方へ</h3>
+  <p>
+    調剤報酬改定・薬価改定など医療制度の変化を現場で感じている薬剤師・医療従事者の方へ。
+    会員登録は無料で、求人情報の確認から始められます。
+  </p>
+  <a
+    href="https://af.moshimo.com/af/c/click?a_id=XXXXXXXX&p_id=XXXX&pc_id=XXXX&pl_id=XXXXX"
+    rel="nofollow sponsored"
+    referrerpolicy="no-referrer-when-downgrade"
+    class="pharma-job-link"
+  >
+    レバウェル薬剤師 ― 無料会員登録で求人を確認する →
+  </a>
+  <p class="affiliate-note">
+    ※会員登録は無料です。掲載求人情報の詳細・正確性は各サービスにお問い合わせください。
+  </p>
+</section>
+
+<style>
+  .affiliate-block-pharmacist {
+    border: 1px solid #b2d8d8;
+    border-radius: 6px;
+    padding: 1.25rem 1.5rem;
+    margin: 2rem 0;
+    background: #f0fafa;
+  }
+  .affiliate-label {
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+  }
+  .affiliate-block-pharmacist h3 {
+    font-size: 1rem;
+    margin-top: 0;
+    color: #2c7a7b;
+  }
+  .pharma-job-link {
+    display: inline-block;
+    margin: 0.5rem 0;
+    padding: 0.5rem 1rem;
+    background: #2c7a7b;
+    color: #fff;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+  .pharma-job-link:hover {
+    background: #1a5d5e;
+  }
+  .affiliate-note {
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 0.75rem;
+    margin-bottom: 0;
+  }
+</style>

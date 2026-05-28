@@ -8,7 +8,7 @@ const articles = defineCollection({
     description: z.string(),
     publishDate: z.coerce.date(),
     updateDate: z.coerce.date().optional(),
-    category: z.enum(['配当比較', '優待比較', '用語解説', '銘柄概要', 'マクロ解説']),
+    category: z.enum(['配当比較', '優待比較', '用語解説', '銘柄概要', 'マクロ解説', '制度解説']),
     relatedStocks: z.array(z.string()).optional(),
   }),
 });
