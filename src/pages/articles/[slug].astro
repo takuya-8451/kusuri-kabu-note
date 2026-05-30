@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AffiliateBlock from '../../components/AffiliateBlock.astro';
 import AffiliateBlockPharmacist from '../../components/AffiliateBlockPharmacist.astro';
+import { categoryHref } from '../../lib/categories';
 
 export async function getStaticPaths() {
   const articles = await getCollection('articles');
@@ -27,6 +28,9 @@ const relatedStocks = (article.data.relatedStocks ?? [])
   <article>
     <header>
       <h1>{article.data.title}</h1>
+      <p>
+        カテゴリ：<a href={categoryHref(article.data.category)}>{article.data.category}</a>
+      </p>
       <p>
         公開日：<time datetime={article.data.publishDate.toISOString()}>
           {article.data.publishDate.toLocaleDateString('ja-JP')}

@@ -1,11 +1,15 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { categoryHref, CATEGORY_ORDER } from '../lib/categories';
 
 const articles = await getCollection('articles');
 const latestArticles = articles
   .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime())
   .slice(0, 3);
+const usedCategories = CATEGORY_ORDER.filter((c) =>
+  articles.some((a) => a.data.category === c),
+);
 ---
 
 <BaseLayout title="トップ">
@@ -17,6 +21,15 @@ const latestArticles = articles
     <h2>医療セクター株データベース</h2>
     <p>製薬・医療機器・ドラッグストアなど、医療セクターの主要銘柄を配当利回り・権利確定月とあわせて一覧で整理しています。</p>
     <a href="/stocks">配当利回りで見る医療株一覧 →</a>
+  </section>
+
+  <section>
+    <h2>カテゴリから探す</h2>
+    <ul class="cat-links">
+      {usedCategories.map((c) => (
+        <li><a href={categoryHref(c)}>{c}</a></li>
+      ))}
+    </ul>
   </section>
 
   <section>

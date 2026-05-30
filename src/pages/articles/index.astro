@@ -1,15 +1,25 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { categoryHref, CATEGORY_ORDER } from '../../lib/categories';
 
 const articles = await getCollection('articles');
 const sorted = articles.sort((a, b) =>
   b.data.publishDate.getTime() - a.data.publishDate.getTime()
 );
+const usedCategories = CATEGORY_ORDER.filter((c) =>
+  articles.some((a) => a.data.category === c),
+);
 ---
 
 <BaseLayout title="記事一覧" description="医療セクターの株・優待情報に関する記事の一覧です。">
   <h1>記事一覧</h1>
+
+  <nav class="cat-nav">
+    <span class="current">すべて</span>
+    {usedCategories.map((c) => <a href={categoryHref(c)}>{c}</a>)}
+  </nav>
+
   <ul>
     {sorted.map((article) => (
       <li>
@@ -21,10 +31,25 @@ const sorted = articles.sort((a, b) =>
           <time datetime={article.data.publishDate.toISOString()}>
             {article.data.publishDate.toLocaleDateString('ja-JP')}
           </time>
-          　{article.data.category}
+          　<a href={categoryHref(article.data.category)}>{article.data.category}</a>
         </small>
         <p>{article.data.description}</p>
       </li>
     ))}
   </ul>
+
+  <style>
+    .cat-nav {
+      margin: 0.5rem 0 1.5rem;
+      font-size: 0.95rem;
+    }
+    .cat-nav a, .cat-nav span {
+      display: inline-block;
+      margin-right: 0.75rem;
+    }
+    .cat-nav .current {
+      font-weight: bold;
+      color: #2c7a7b;
+    }
+  </style>
 </BaseLayout>
