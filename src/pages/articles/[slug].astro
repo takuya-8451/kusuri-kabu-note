@@ -14,6 +14,13 @@ export async function getStaticPaths() {
 
 const { article } = Astro.props;
 const { Content } = await render(article);
+
+// この記事の relatedStocks のうち、銘柄ページが存在するものだけリンク化する
+const stocks = await getCollection('stocks');
+const stockByTicker = new Map(stocks.map((s) => [s.data.ticker, s.data]));
+const relatedStocks = (article.data.relatedStocks ?? [])
+  .map((ticker) => stockByTicker.get(ticker))
+  .filter((s) => s !== undefined);
 ---
 
 <BaseLayout title={article.data.title} description={article.data.description}>
@@ -36,6 +43,21 @@ const { Content } = await render(article);
 
     <Content />
 
+    {relatedStocks.length > 0 && (
+      <section class="related-stocks">
+        <h2>この記事で取り上げた銘柄</h2>
+        <ul>
+          {relatedStocks.map((s) => (
+            <li>
+              <a href={`/stocks/${s.ticker}/`}>{s.name}（{s.ticker}）</a>
+              <small>　{s.sector}</small>
+            </li>
+          ))}
+        </ul>
+        <p><a href="/stocks/">医療セクター株一覧をすべて見る →</a></p>
+      </section>
+    )}
+
     <AffiliateBlock />
     {article.data.category === '制度解説' && <AffiliateBlockPharmacist />}
 
@@ -44,4 +66,24 @@ const { Content } = await render(article);
       <p><strong>免責事項：</strong>本記事は情報提供を目的としており、個別銘柄の売買推奨・目標株価の提示・ポートフォリオ構成助言など投資助言業に該当する情報提供は一切行いません。掲載データは各社IR等の一次情報をもとに運営者が整理したものです。情報の正確性・完全性を保証するものではなく、投資判断はご自身の責任において行ってください。</p>
     </footer>
   </article>
+
+  <style>
+    .related-stocks {
+      border-top: 1px solid #ddd;
+      margin-top: 2rem;
+      padding-top: 1rem;
+    }
+    .related-stocks h2 {
+      font-size: 1.1rem;
+    }
+    .related-stocks ul {
+      padding-left: 1.25rem;
+    }
+    .related-stocks li {
+      margin-bottom: 0.25rem;
+    }
+    .related-stocks small {
+      color: #666;
+    }
+  </style>
 </BaseLayout>

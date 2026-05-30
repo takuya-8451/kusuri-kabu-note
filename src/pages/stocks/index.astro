@@ -1,0 +1,91 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const stocks = await getCollection('stocks');
+
+// セクターの表示順を固定
+const sectorOrder = ['医薬品', '医療機器', '小売（ドラッグストア）', '医療複合'];
+
+const sorted = [...stocks].sort((a, b) => {
+  const so = sectorOrder.indexOf(a.data.sector) - sectorOrder.indexOf(b.data.sector);
+  if (so !== 0) return so;
+  const ay = a.data.dividendYield ?? -1;
+  const by = b.data.dividendYield ?? -1;
+  return by - ay;
+});
+
+const grouped = sectorOrder
+  .map((sector) => ({ sector, items: sorted.filter((s) => s.data.sector === sector) }))
+  .filter((g) => g.items.length > 0);
+
+const fmtMonths = (months?: number[]) =>
+  months && months.length ? months.map((m) => `${m}月`).join('・') : '—';
+const fmtYield = (y?: number) => (typeof y === 'number' ? `${y.toFixed(2)}%` : '—');
+---
+
+<BaseLayout
+  title="医療セクター株一覧"
+  description="製薬・医療機器・ドラッグストアなど医療セクターの主要銘柄を、配当利回り・権利確定月とあわせて一覧で整理したデータベースです。"
+>
+  <h1>医療セクター株一覧</h1>
+  <p>
+    製薬・医療機器・ドラッグストアなど、医療セクターの主要銘柄を一覧で整理しています。
+    配当利回り・権利確定月は各社IR等の一次情報をもとにした参考値です。銘柄名をクリックすると詳細と関連記事を確認できます。
+  </p>
+
+  {grouped.map((group) => (
+    <section>
+      <h2>{group.sector}</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>銘柄名</th>
+            <th>コード</th>
+            <th>市場</th>
+            <th>配当利回り</th>
+            <th>権利確定月</th>
+          </tr>
+        </thead>
+        <tbody>
+          {group.items.map((s) => (
+            <tr>
+              <td><a href={`/stocks/${s.data.ticker}/`}>{s.data.name}</a></td>
+              <td>{s.data.ticker}</td>
+              <td>{s.data.market}</td>
+              <td>{fmtYield(s.data.dividendYield)}</td>
+              <td>{fmtMonths(s.data.recordMonths)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+  ))}
+
+  <p class="note">
+    ※配当利回りは記載時点の予想値または実績値であり、株価変動・各社の配当方針変更により変動します。
+    本ページは情報提供を目的としており、個別銘柄の売買推奨・投資助言を行うものではありません。
+  </p>
+
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 0.5rem 0 1.5rem;
+      font-size: 0.95rem;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 0.5rem 0.6rem;
+      text-align: left;
+    }
+    th {
+      background: #f4f7f7;
+    }
+    .note {
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 1.5rem;
+    }
+  </style>
+</BaseLayout>

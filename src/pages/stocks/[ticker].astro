@@ -1,0 +1,106 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const stocks = await getCollection('stocks');
+  const articles = await getCollection('articles');
+  return stocks.map((stock) => ({
+    params: { ticker: stock.data.ticker },
+    props: {
+      stock,
+      relatedArticles: articles
+        .filter((a) => a.data.relatedStocks?.includes(stock.data.ticker))
+        .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime()),
+    },
+  }));
+}
+
+const { stock, relatedArticles } = Astro.props;
+const d = stock.data;
+
+const fmtMonths = (months?: number[]) =>
+  months && months.length ? months.map((m) => `${m}月`).join('・') : '—';
+const fmtYield = (y?: number) => (typeof y === 'number' ? `${y.toFixed(2)}%` : '—');
+---
+
+<BaseLayout
+  title={`${d.name}（${d.ticker}）の配当・権利確定月`}
+  description={`${d.name}（${d.ticker}・${d.sector}）の配当利回り・権利確定月・関連記事を医療セクター視点で整理。${d.description ?? ''}`}
+>
+  <article>
+    <p><a href="/stocks/">← 医療セクター株一覧へ</a></p>
+
+    <h1>{d.name}（{d.ticker}）</h1>
+
+    <table>
+      <tbody>
+        <tr><th>市場</th><td>{d.market}</td></tr>
+        <tr><th>セクター</th><td>{d.sector}</td></tr>
+        <tr><th>配当利回り</th><td>{fmtYield(d.dividendYield)}</td></tr>
+        <tr><th>権利確定月</th><td>{fmtMonths(d.recordMonths)}</td></tr>
+        {typeof d.consecutiveDividendYears === 'number' && (
+          <tr><th>連続増配年数</th><td>{d.consecutiveDividendYears}年</td></tr>
+        )}
+        <tr><th>IR情報</th><td><a href={d.irUrl} rel="nofollow" target="_blank">公式IRページ →</a></td></tr>
+      </tbody>
+    </table>
+
+    {d.description && <p class="desc">{d.description}</p>}
+
+    <section>
+      <h2>この銘柄に関連する記事</h2>
+      {relatedArticles.length > 0 ? (
+        <ul>
+          {relatedArticles.map((a) => (
+            <li>
+              <a href={`/articles/${a.id}/`}>{a.data.title}</a>
+              <br />
+              <small>
+                <time datetime={a.data.publishDate.toISOString()}>
+                  {a.data.publishDate.toLocaleDateString('ja-JP')}
+                </time>
+                　{a.data.category}
+              </small>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>現在、この銘柄を取り上げた記事はありません。</p>
+      )}
+    </section>
+
+    <footer>
+      <hr />
+      <p class="note">
+        ※配当利回り等の数値は記載時点の予想値または実績値であり変動します。本ページは情報提供を目的としており、
+        個別銘柄の売買推奨・目標株価の提示・ポートフォリオ構成助言など投資助言業に該当する情報提供は一切行いません。
+        投資判断はご自身の責任において行ってください。
+      </p>
+    </footer>
+  </article>
+
+  <style>
+    table {
+      border-collapse: collapse;
+      margin: 0.5rem 0 1.5rem;
+      font-size: 0.95rem;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 0.5rem 0.8rem;
+      text-align: left;
+    }
+    th {
+      background: #f4f7f7;
+      white-space: nowrap;
+    }
+    .desc {
+      color: #333;
+    }
+    .note {
+      font-size: 0.85rem;
+      color: #666;
+    }
+  </style>
+</BaseLayout>
