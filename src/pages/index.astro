@@ -4,23 +4,52 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { categoryHref, CATEGORY_ORDER } from '../lib/categories';
 
 const articles = await getCollection('articles');
+const stocks = await getCollection('stocks');
 const latestArticles = articles
   .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime())
-  .slice(0, 3);
+  .slice(0, 5);
 const usedCategories = CATEGORY_ORDER.filter((c) =>
   articles.some((a) => a.data.category === c),
 );
+const stockCount = stocks.length;
 ---
 
 <BaseLayout title="トップ">
-  <h1>くすりの株ノート</h1>
-  <p>医療セクターの株・優待情報を、薬剤師・FP2級の視点で集約するサイトです。</p>
-  <p>個別銘柄の売買推奨・ポートフォリオ助言は行っておりません。情報収集の参考としてご活用ください。</p>
+  <section class="hero">
+    <h1>くすりの株ノート</h1>
+    <p class="lead">
+      製薬・医療機器・調剤・ドラッグストアなど<strong>医療セクターの配当・優待情報</strong>を、
+      <strong>薬剤師・FP2級・医療法人事務長</strong>の視点で集約するデータベースサイトです。
+    </p>
+    <p class="note">
+      薬価改定・調剤報酬・医薬品供給といった制度の動きを、現場で関わってきた立場から読み解きます。
+      個別銘柄の売買推奨・ポートフォリオ助言は行っておりません。
+    </p>
+  </section>
+
+  <section class="cta">
+    <h2>医療セクター株データベース</h2>
+    <p>主要{stockCount}銘柄の配当利回り・権利確定月をセクター別に整理。気になる銘柄から関連記事へもたどれます。</p>
+    <p><a class="cta-link" href="/stocks/">配当利回りで見る医療株一覧 →</a></p>
+  </section>
 
   <section>
-    <h2>医療セクター株データベース</h2>
-    <p>製薬・医療機器・ドラッグストアなど、医療セクターの主要銘柄を配当利回り・権利確定月とあわせて一覧で整理しています。</p>
-    <a href="/stocks">配当利回りで見る医療株一覧 →</a>
+    <h2>最新記事</h2>
+    <ul class="article-list">
+      {latestArticles.map((article) => (
+        <li>
+          <a href={`/articles/${article.id}/`}>{article.data.title}</a>
+          <br />
+          <small>
+            <time datetime={article.data.publishDate.toISOString()}>
+              {article.data.publishDate.toLocaleDateString('ja-JP')}
+            </time>
+            　<a href={categoryHref(article.data.category)}>{article.data.category}</a>
+          </small>
+        </li>
+      ))}
+    </ul>
+    <p><a href="/articles/">記事一覧をすべて見る →</a></p>
   </section>
 
   <section>
@@ -32,22 +61,56 @@ const usedCategories = CATEGORY_ORDER.filter((c) =>
     </ul>
   </section>
 
-  <section>
-    <h2>最新記事</h2>
-    <ul>
-      {latestArticles.map((article) => (
-        <li>
-          <a href={`/articles/${article.id}/`}>{article.data.title}</a>
-          <br />
-          <small>
-            <time datetime={article.data.publishDate.toISOString()}>
-              {article.data.publishDate.toLocaleDateString('ja-JP')}
-            </time>
-            　{article.data.category}
-          </small>
-        </li>
-      ))}
-    </ul>
-    <a href="/articles">記事一覧をすべて見る →</a>
+  <section class="about">
+    <h2>運営者について</h2>
+    <p>
+      運営者は薬剤師・FP2級・医療法人事務長。調剤現場での薬価・在庫・供給対応の経験と、
+      ファイナンシャル・プランニングの知識をかけ合わせ、医療セクター株を「制度」と「現場」の両面から読み解きます。
+    </p>
+    <p><a href="/about/">運営者情報をくわしく見る →</a></p>
   </section>
+
+  <p class="disclaimer-note">
+    ※本サイトは情報提供を目的とし、投資助言業に該当する個別銘柄の推奨・売買指示・ポートフォリオ構成助言を行うものではありません。投資判断はご自身の責任において行ってください。
+  </p>
+
+  <style>
+    .hero { margin-bottom: 1.5rem; }
+    .hero h1 { margin-bottom: 0.5rem; }
+    .lead { font-size: 1.1rem; line-height: 1.8; }
+    .note { color: #555; font-size: 0.95rem; }
+    .cta {
+      border: 1px solid #b2d8d8;
+      background: #f0fafa;
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin: 1.5rem 0;
+    }
+    .cta h2 { margin-top: 0; }
+    .cta-link {
+      display: inline-block;
+      margin-top: 0.25rem;
+      padding: 0.5rem 1rem;
+      background: #2c7a7b;
+      color: #fff;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .cta-link:hover { background: #1a5d5e; }
+    .article-list li { margin-bottom: 0.5rem; }
+    .cat-links { list-style: none; padding-left: 0; }
+    .cat-links li { display: inline-block; margin: 0 0.5rem 0.5rem 0; }
+    .cat-links a {
+      display: inline-block;
+      padding: 0.25rem 0.85rem;
+      border: 1px solid #ccc;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    .cat-links a:hover { border-color: #2c7a7b; color: #2c7a7b; }
+    .about { border-top: 1px solid #eee; margin-top: 2rem; padding-top: 1rem; color: #333; }
+    .disclaimer-note { font-size: 0.8rem; color: #777; margin-top: 2rem; }
+  </style>
 </BaseLayout>
