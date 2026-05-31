@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="ページが見つかりません（404）" description="お探しのページは見つかりませんでした。トップページ・記事一覧・銘柄一覧からお探しください。">
+  <h1>ページが見つかりませんでした（404）</h1>
+  <p>お探しのページは、移動または削除されたか、URLが正しくない可能性があります。</p>
+
+  <p>以下のページからお探しください。</p>
+  <ul>
+    <li><a href="/">トップページ</a></li>
+    <li><a href="/articles/">記事一覧</a></li>
+    <li><a href="/stocks/">医療セクター株一覧</a></li>
+  </ul>
+</BaseLayout>
