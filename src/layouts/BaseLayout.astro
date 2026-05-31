@@ -6,6 +6,8 @@ interface Props {
 const { title, description = "医療セクターの株・優待情報を薬剤師・FP2級の視点で集約するサイト" } = Astro.props;
 const GA_ID = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
 const isProd = import.meta.env.PROD;
+const fullTitle = `${title} | くすりの株ノート`;
+const canonicalUrl = Astro.url.href;
 ---
 
 <html lang="ja">
@@ -16,8 +18,20 @@ const isProd = import.meta.env.PROD;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
-    <link rel="canonical" href={Astro.url.href} />
-    <title>{title} | くすりの株ノート</title>
+    <link rel="canonical" href={canonicalUrl} />
+    <title>{fullTitle}</title>
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="くすりの株ノート" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:locale" content="ja_JP" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+
     <slot name="head" />
     {isProd && GA_ID && (
       <Fragment>
