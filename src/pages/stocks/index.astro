@@ -5,7 +5,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 const stocks = await getCollection('stocks');
 
 // セクターの表示順を固定
-const sectorOrder = ['医薬品', '医療機器', '小売（ドラッグストア）', '医療複合'];
+const sectorOrder = ['医薬品', '医療機器', '小売（ドラッグストア）', '調剤薬局', '医療複合'];
 
 const sorted = [...stocks].sort((a, b) => {
   const so = sectorOrder.indexOf(a.data.sector) - sectorOrder.indexOf(b.data.sector);
