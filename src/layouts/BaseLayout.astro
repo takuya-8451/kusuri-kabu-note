@@ -1,4 +1,6 @@
 ---
+import '../styles/global.css';
+
 interface Props {
   title: string;
   description?: string;
@@ -8,6 +10,7 @@ const GA_ID = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
 const isProd = import.meta.env.PROD;
 const fullTitle = `${title} | くすりの株ノート`;
 const canonicalUrl = Astro.url.href;
+const ogImageUrl = new URL('/ogp.png', Astro.site ?? 'https://kusuri-kabu-note.com').href;
 ---
 
 <html lang="ja">
@@ -28,9 +31,11 @@ const canonicalUrl = Astro.url.href;
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:locale" content="ja_JP" />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
 
     <slot name="head" />
     {isProd && GA_ID && (
@@ -46,8 +51,17 @@ const canonicalUrl = Astro.url.href;
     )}
   </head>
   <body>
-    <header>
-      <a href="/">くすりの株ノート</a>
+    <header class="site-header">
+      <a href="/" class="brand" aria-label="くすりの株ノート トップへ">
+        <svg width="30" height="30" viewBox="0 0 32 32" role="img" aria-hidden="true">
+          <g transform="rotate(-40 16 16)">
+            <rect x="5" y="12.5" width="22" height="9" rx="4.5" fill="#2c7a7b" />
+            <rect x="16" y="12.5" width="11" height="9" rx="4.5" fill="#5fb0b1" />
+            <rect x="15.2" y="12.5" width="1.6" height="9" fill="#ffffff" />
+          </g>
+        </svg>
+        くすりの株ノート
+      </a>
       <nav>
         <a href="/">トップ</a>
         <a href="/articles">記事一覧</a>
@@ -63,7 +77,7 @@ const canonicalUrl = Astro.url.href;
       <slot />
     </main>
 
-    <footer>
+    <footer class="site-footer">
       <p>本サイトはアフィリエイト広告を含みます。</p>
       <p>本サイトは情報提供を目的とし、投資助言業に該当する個別銘柄の推奨・売買指示・ポートフォリオ構成助言を行うものではありません。投資判断はご自身の責任において行ってください。</p>
       <p>運営者：薬剤師 / ファイナンシャル・プランニング技能士2級</p>
