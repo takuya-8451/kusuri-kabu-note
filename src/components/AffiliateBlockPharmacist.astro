@@ -1,8 +1,11 @@
 ---
 // src/components/AffiliateBlockPharmacist.astro
 // もしもアフィリエイト：レバウェル薬剤師（新規会員登録 ¥30,000）
-// TODO: 下記 href と img src をもしもアフィリエイト管理画面で発行したリンクに差し替える
+// レバウェル承認待ちのため非表示中。承認・リンク発行後に APPROVED を true にし、
+// 下記 href をもしもアフィリエイト管理画面で発行した実リンクに差し替える。
+const APPROVED = false;
 ---
+{APPROVED && (
 <section class="affiliate-block-pharmacist">
   <p class="affiliate-label">アフィリエイト広告を含みます</p>
   <h3>薬剤師・医療従事者の転職をお考えの方へ</h3>
@@ -22,6 +25,7 @@
     ※会員登録は無料です。掲載求人情報の詳細・正確性は各サービスにお問い合わせください。
   </p>
 </section>
+)}
 
 <style>
   .affiliate-block-pharmacist {

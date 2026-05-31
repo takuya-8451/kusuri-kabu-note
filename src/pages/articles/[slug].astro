@@ -22,6 +22,13 @@ const stockByTicker = new Map(stocks.map((s) => [s.data.ticker, s.data]));
 const relatedStocks = (article.data.relatedStocks ?? [])
   .map((ticker) => stockByTicker.get(ticker))
   .filter((s) => s !== undefined);
+
+// 同じカテゴリの記事を新しい順に最大3件（自分自身は除外）
+const allArticles = await getCollection('articles');
+const relatedArticles = allArticles
+  .filter((a) => a.id !== article.id && a.data.category === article.data.category)
+  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
+  .slice(0, 3);
 ---
 
 <BaseLayout title={article.data.title} description={article.data.description}>
@@ -62,6 +69,20 @@ const relatedStocks = (article.data.relatedStocks ?? [])
       </section>
     )}
 
+    {relatedArticles.length > 0 && (
+      <section class="related-articles">
+        <h2>同じカテゴリの記事</h2>
+        <ul>
+          {relatedArticles.map((a) => (
+            <li>
+              <a href={`/articles/${a.id}/`}>{a.data.title}</a>
+            </li>
+          ))}
+        </ul>
+        <p><a href={categoryHref(article.data.category)}>「{article.data.category}」の記事をすべて見る →</a></p>
+      </section>
+    )}
+
     <AffiliateBlock />
     {article.data.category === '制度解説' && <AffiliateBlockPharmacist />}
 
@@ -88,6 +109,20 @@ const relatedStocks = (article.data.relatedStocks ?? [])
     }
     .related-stocks small {
       color: #666;
+    }
+    .related-articles {
+      border-top: 1px solid #ddd;
+      margin-top: 2rem;
+      padding-top: 1rem;
+    }
+    .related-articles h2 {
+      font-size: 1.1rem;
+    }
+    .related-articles ul {
+      padding-left: 1.25rem;
+    }
+    .related-articles li {
+      margin-bottom: 0.25rem;
     }
   </style>
 </BaseLayout>
