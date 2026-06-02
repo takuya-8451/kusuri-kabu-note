@@ -50,12 +50,18 @@ const jsonLd = {
       <tbody>
         <tr><th>市場</th><td>{d.market}</td></tr>
         <tr><th>セクター</th><td>{d.sector}</td></tr>
-        <tr><th>配当利回り</th><td>{fmtYield(d.dividendYield)}</td></tr>
+        <tr><th>配当利回り</th><td>{fmtYield(d.dividendYield)}{d.dividendBasis ? `（${d.dividendBasis}）` : ''}</td></tr>
         <tr><th>権利確定月</th><td>{fmtMonths(d.recordMonths)}</td></tr>
         {typeof d.consecutiveDividendYears === 'number' && (
           <tr><th>連続増配年数</th><td>{d.consecutiveDividendYears}年</td></tr>
         )}
         <tr><th>IR情報</th><td><a href={d.irUrl} rel="nofollow" target="_blank">公式IRページ →</a></td></tr>
+        {(d.asOfDate || typeof d.dividendYield === 'number') && (
+          <tr>
+            <th>出典・時点</th>
+            <td>{d.dataSource}{d.asOfDate ? `（${d.asOfDate.toLocaleDateString('ja-JP')}時点）` : ''}</td>
+          </tr>
+        )}
       </tbody>
     </table>
 
