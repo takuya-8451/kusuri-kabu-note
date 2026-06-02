@@ -17,6 +17,9 @@ pnpm-debug.log*
 .env
 .env.production
 
+# CIが生成するデータ鮮度レポート（Issue本文用の一時ファイル）
+data-freshness-report.md
+
 # macOS-specific files
 .DS_Store
 
