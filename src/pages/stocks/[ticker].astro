@@ -22,12 +22,25 @@ const d = stock.data;
 const fmtMonths = (months?: number[]) =>
   months && months.length ? months.map((m) => `${m}月`).join('・') : '—';
 const fmtYield = (y?: number) => (typeof y === 'number' ? `${y.toFixed(2)}%` : '—');
+
+// 構造化データ（schema.org JSON-LD）：投資商品を示唆する型は避けパンくずのみ
+const siteUrl = Astro.site ?? new URL('https://kusuri-kabu-note.com');
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'トップ', item: siteUrl.href },
+    { '@type': 'ListItem', position: 2, name: '医療セクター株一覧', item: new URL('/stocks/', siteUrl).href },
+    { '@type': 'ListItem', position: 3, name: `${d.name}（${d.ticker}）`, item: new URL(`/stocks/${d.ticker}/`, siteUrl).href },
+  ],
+};
 ---
 
 <BaseLayout
   title={`${d.name}（${d.ticker}）の配当・権利確定月`}
   description={`${d.name}（${d.ticker}・${d.sector}）の配当利回り・権利確定月・関連記事を医療セクター視点で整理。${d.description ?? ''}`}
 >
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   <article>
     <p><a href="/stocks/">← 医療セクター株一覧へ</a></p>
 

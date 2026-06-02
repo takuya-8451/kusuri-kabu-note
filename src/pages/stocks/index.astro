@@ -22,12 +22,39 @@ const grouped = sectorOrder
 const fmtMonths = (months?: number[]) =>
   months && months.length ? months.map((m) => `${m}月`).join('・') : '—';
 const fmtYield = (y?: number) => (typeof y === 'number' ? `${y.toFixed(2)}%` : '—');
+
+// 構造化データ（schema.org JSON-LD）：独自データベース=Dataset＋パンくず
+const siteUrl = Astro.site ?? new URL('https://kusuri-kabu-note.com');
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Dataset',
+      name: '医療セクター株 配当・権利確定データベース',
+      description:
+        '製薬・医薬品卸・医療機器・ドラッグストア・調剤薬局など医療セクターの主要上場企業について、配当利回り・権利確定月・連続増配年数を各社IR一次情報から整理したデータベース。',
+      url: new URL('/stocks/', siteUrl).href,
+      keywords: ['医療セクター', '配当利回り', '株主優待', '製薬', '医薬品卸', '医療機器', 'ドラッグストア', '調剤薬局'],
+      creator: { '@type': 'Organization', name: 'くすりの株ノート', url: siteUrl.href },
+      isAccessibleForFree: true,
+      inLanguage: 'ja',
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'トップ', item: siteUrl.href },
+        { '@type': 'ListItem', position: 2, name: '医療セクター株一覧', item: new URL('/stocks/', siteUrl).href },
+      ],
+    },
+  ],
+};
 ---
 
 <BaseLayout
   title="医療セクター株一覧"
   description="製薬・医療機器・ドラッグストアなど医療セクターの主要銘柄を、配当利回り・権利確定月とあわせて一覧で整理したデータベースです。"
 >
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   <h1>医療セクター株一覧</h1>
   <p>
     製薬・医療機器・ドラッグストアなど、医療セクターの主要銘柄を一覧で整理しています。
