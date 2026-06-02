@@ -1,0 +1,78 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const stocks = await getCollection('stocks');
+
+const fmtYield = (y?: number) => (typeof y === 'number' ? `${y.toFixed(2)}%` : '—');
+
+// 1〜12月ごとに、その月が権利確定月に含まれる銘柄を集約（利回り降順）。銘柄は複数月に登場しうる。
+const months = Array.from({ length: 12 }, (_, i) => i + 1)
+  .map((month) => ({
+    month,
+    items: stocks
+      .filter((s) => s.data.recordMonths?.includes(month))
+      .sort((a, b) => (b.data.dividendYield ?? -1) - (a.data.dividendYield ?? -1)),
+  }))
+  .filter((m) => m.items.length > 0);
+
+const siteUrl = Astro.site ?? new URL('https://kusuri-kabu-note.com');
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'トップ', item: siteUrl.href },
+    { '@type': 'ListItem', position: 2, name: '医療セクター株一覧', item: new URL('/stocks/', siteUrl).href },
+    { '@type': 'ListItem', position: 3, name: '権利確定月カレンダー', item: new URL('/stocks/calendar/', siteUrl).href },
+  ],
+};
+---
+
+<BaseLayout
+  title="医療セクター株 権利確定月カレンダー"
+  description="製薬・医療機器・ドラッグストアなど医療セクターの主要銘柄を、権利確定月（1〜12月）ごとに整理。何月にどの医療株の権利が確定するかを一覧で確認できます。"
+>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <p><a href="/stocks/">← 医療セクター株一覧へ</a></p>
+
+  <h1>権利確定月カレンダー</h1>
+  <p>
+    医療セクターの主要銘柄を、権利確定月ごとに整理しています。中間・期末で年2回権利が確定する銘柄は複数の月に登場します。
+    配当利回りは各社IR等の一次情報をもとにした参考値です。銘柄名から詳細・関連記事を確認できます。
+  </p>
+
+  {months.map(({ month, items }) => (
+    <section>
+      <h2>{month}月</h2>
+      <table>
+        <thead>
+          <tr><th>銘柄名</th><th>コード</th><th>セクター</th><th>配当利回り</th></tr>
+        </thead>
+        <tbody>
+          {items.map((s) => (
+            <tr>
+              <td><a href={`/stocks/${s.data.ticker}/`}>{s.data.name}</a></td>
+              <td>{s.data.ticker}</td>
+              <td>{s.data.sector}</td>
+              <td>{fmtYield(s.data.dividendYield)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+  ))}
+
+  <p class="note">
+    ※権利確定月は各社の決算期等にもとづく一般的な整理であり、実際の権利付最終日・配当金額・優待内容は各社IRでご確認ください。
+    本ページは情報提供を目的としており、個別銘柄の売買推奨・投資助言を行うものではありません。
+  </p>
+
+  <style>
+    .note {
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 1.5rem;
+    }
+  </style>
+</BaseLayout>
