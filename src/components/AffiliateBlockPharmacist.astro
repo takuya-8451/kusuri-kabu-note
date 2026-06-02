@@ -1,28 +1,28 @@
 ---
 // src/components/AffiliateBlockPharmacist.astro
-// もしもアフィリエイト：レバウェル薬剤師（新規会員登録 ¥30,000）
-// レバウェル承認待ちのため非表示中。承認・リンク発行後に APPROVED を true にし、
-// 下記 href をもしもアフィリエイト管理画面で発行した実リンクに差し替える。
-const APPROVED = false;
+// A8.net：ファルマスタッフ（薬剤師の転職・派遣／成果=電話面談完了 ¥65,000）
+// 制約：SNS経由の申込は否認・商標KWのリスティング/SNS投稿は禁止 → サイト内のみに設置すること。
+const APPROVED = true;
 ---
 {APPROVED && (
 <section class="affiliate-block-pharmacist">
   <p class="affiliate-label">アフィリエイト広告を含みます</p>
-  <h3>薬剤師・医療従事者の転職をお考えの方へ</h3>
+  <h3>薬剤師の転職・派遣求人をお探しの方へ</h3>
   <p>
-    調剤報酬改定・薬価改定など医療制度の変化を現場で感じている薬剤師・医療従事者の方へ。
-    会員登録は無料で、求人情報の確認から始められます。
+    調剤報酬改定・薬価改定など医療制度の変化を現場で感じている薬剤師の方へ。
+    ファルマスタッフは薬剤師向けの転職・派遣求人サービスです。登録は無料で、登録後の面談で求人を確認できます。
   </p>
   <a
-    href="https://af.moshimo.com/af/c/click?a_id=XXXXXXXX&p_id=XXXX&pc_id=XXXX&pl_id=XXXXX"
+    href="https://px.a8.net/svt/ejp?a8mat=4B5LJZ+9FD3LE+276A+5ZU2A"
     rel="nofollow sponsored"
     referrerpolicy="no-referrer-when-downgrade"
     class="pharma-job-link"
   >
-    レバウェル薬剤師 ― 無料会員登録で求人を確認する →
+    ファルマスタッフで薬剤師求人を探す（無料登録）→
   </a>
+  <img border="0" width="1" height="1" src="https://www16.a8.net/0.gif?a8mat=4B5LJZ+9FD3LE+276A+5ZU2A" alt="" />
   <p class="affiliate-note">
-    ※会員登録は無料です。掲載求人情報の詳細・正確性は各サービスにお問い合わせください。
+    ※登録・相談は無料です。薬剤師資格をお持ちで転職をご検討の方が対象です。掲載求人情報の詳細・条件は各サービスにお問い合わせください。
   </p>
 </section>
 )}
