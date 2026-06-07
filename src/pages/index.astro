@@ -8,6 +8,16 @@ const stocks = await getCollection('stocks');
 const latestArticles = articles
   .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime())
   .slice(0, 5);
+// 注目記事：GSC/GA4で読まれている（直帰率が低い・検索順位が出ている）実証済みの比較記事を手前に出す。
+const FEATURED_IDS = [
+  'drugstore-yutai-4sha-hikaku',
+  'iryo-kiki-haitou-hikaku',
+  'seiyaku-haitou-seikou-hikaku',
+  'drugstore-haitou-2sha-hikaku',
+];
+const featuredArticles = FEATURED_IDS
+  .map((id) => articles.find((a) => a.id === id))
+  .filter((a) => a !== undefined);
 const usedCategories = CATEGORY_ORDER.filter((c) =>
   articles.some((a) => a.data.category === c),
 );
@@ -25,6 +35,21 @@ const stockCount = stocks.length;
       薬価改定・調剤報酬・医薬品供給といった制度の動きを、現場で関わってきた立場から読み解きます。
       個別銘柄の売買推奨・ポートフォリオ助言は行っておりません。
     </p>
+  </section>
+
+  <section class="featured">
+    <h2>注目の比較記事</h2>
+    <ul class="featured-list">
+      {featuredArticles.map((article) => (
+        <li>
+          <a class="featured-card" href={`/articles/${article.id}/`}>
+            <span class="featured-title">{article.data.title}</span>
+            <span class="featured-desc">{article.data.description}</span>
+            <span class="featured-cat">{article.data.category}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
   </section>
 
   <section class="cta">
@@ -79,6 +104,37 @@ const stockCount = stocks.length;
     .hero h1 { margin-bottom: 0.5rem; }
     .lead { font-size: 1.1rem; line-height: 1.8; }
     .note { color: #555; font-size: 0.95rem; }
+    .featured { margin: 1.5rem 0; }
+    .featured-list { list-style: none; padding-left: 0; display: grid; gap: 0.75rem; }
+    @media (min-width: 600px) {
+      .featured-list { grid-template-columns: 1fr 1fr; }
+    }
+    .featured-card {
+      display: block;
+      height: 100%;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 0.9rem 1rem;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .featured-card:hover {
+      border-color: #2c7a7b;
+      box-shadow: 0 2px 8px rgba(44, 122, 123, 0.12);
+    }
+    .featured-title { display: block; font-weight: bold; color: #1a5d5e; line-height: 1.5; }
+    .featured-desc { display: block; margin-top: 0.4rem; font-size: 0.85rem; color: #555; line-height: 1.6; }
+    .featured-cat {
+      display: inline-block;
+      margin-top: 0.5rem;
+      padding: 0.1rem 0.6rem;
+      background: #f0fafa;
+      border: 1px solid #b2d8d8;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      color: #2c7a7b;
+    }
     .cta {
       border: 1px solid #b2d8d8;
       background: #f0fafa;

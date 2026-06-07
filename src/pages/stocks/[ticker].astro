@@ -37,8 +37,8 @@ const jsonLd = {
 ---
 
 <BaseLayout
-  title={`${d.name}（${d.ticker}）の配当・権利確定月`}
-  description={`${d.name}（${d.ticker}・${d.sector}）の配当利回り・権利確定月・関連記事を医療セクター視点で整理。${d.description ?? ''}`}
+  title={`${d.name}（${d.ticker}）の配当・権利確定日｜利回り・権利確定月`}
+  description={`${d.name}（${d.ticker}・${d.sector}）の配当利回り・権利確定月、権利付最終日の調べ方、関連記事を医療セクター視点で整理。${d.description ?? ''}`}
 >
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   <article>
@@ -66,6 +66,23 @@ const jsonLd = {
     </table>
 
     {d.description && <p class="desc">{d.description}</p>}
+
+    {d.recordMonths && d.recordMonths.length > 0 && (
+      <section class="kenri">
+        <h2>{d.name}の配当・権利確定日について</h2>
+        <p>
+          {d.name}（{d.ticker}）の権利確定月は<strong>{fmtMonths(d.recordMonths)}</strong>です。
+          配当（および株主優待がある場合は優待）を受け取るには、権利確定日＝権利確定月の最終営業日の
+          <strong>2営業日前にあたる「権利付最終日」</strong>までに株式を保有している必要があります。
+          その翌営業日が「権利落ち日」で、この日以降に買っても今回の権利は得られません。
+        </p>
+        <p class="kenri-note">
+          ※権利付最終日の具体的な日付は、年ごとの証券取引所の営業日カレンダーによって毎年変わります。
+          実際の権利確定日・権利付最終日・配当金額は
+          <a href={d.irUrl} rel="nofollow" target="_blank">公式IRページ</a>または取引先の証券会社で必ずご確認ください。
+        </p>
+      </section>
+    )}
 
     <section>
       <h2>この銘柄に関連する記事</h2>
@@ -116,6 +133,19 @@ const jsonLd = {
     }
     .desc {
       color: #333;
+    }
+    .kenri {
+      border: 1px solid #b2d8d8;
+      background: #f0fafa;
+      border-radius: 8px;
+      padding: 0.5rem 1.25rem 1rem;
+      margin: 1.5rem 0;
+    }
+    .kenri h2 { font-size: 1.1rem; }
+    .kenri-note {
+      font-size: 0.8rem;
+      color: #666;
+      margin-bottom: 0;
     }
     .note {
       font-size: 0.85rem;
