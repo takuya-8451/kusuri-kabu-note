@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import AffiliateBlock from '../../components/AffiliateBlock.astro';
 
 export async function getStaticPaths() {
   const stocks = await getCollection('stocks');
@@ -105,6 +106,8 @@ const jsonLd = {
         <p>現在、この銘柄を取り上げた記事はありません。</p>
       )}
     </section>
+
+    <AffiliateBlock />
 
     <footer>
       <hr />
