@@ -1,82 +1,202 @@
 /* くすりの株ノート グローバルスタイル
-   全ページ共通の読みやすさ・余白・配色・ヘッダー/フッター装飾。 */
+   方針：teal を主役に残しつつモダンに刷新。
+   デザイントークン（色・余白・角丸・影・タイポ）を一元管理し、信頼感×可読性を両立。 */
 
 :root {
+  /* layout */
   --maxw: 820px;
+
+  /* color — teal を主役に継承 */
   --accent: #2c7a7b;
   --accent-dark: #1a5d5e;
-  --accent-soft: #f0fafa;
-  --ink: #2b2b2b;
-  --muted: #666;
-  --line: #e3e8e8;
+  --accent-soft: #eaf4f4;   /* 見出し背景・タグなどの面 */
+  --accent-tint: #f5f9f9;   /* ごく薄いサーフェス（ゼブラ等） */
+
+  --ink: #16302f;           /* 見出し・強調（深いティール寄りの墨） */
+  --text: #283433;          /* 本文 */
+  --muted: #5c6a69;         /* 補助テキスト（AA通過） */
+  --line: #e4ebeb;          /* 罫線 */
+  --line-strong: #cfdada;
+  --accent-line: #bcdcdc;   /* teal寄りの罫（情報/CTAボックス枠） */
+  --surface: #f6f9f9;       /* セクション背景 */
+
+  /* radius / shadow */
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow-sm: 0 1px 2px rgba(22, 48, 47, .06), 0 2px 6px rgba(22, 48, 47, .05);
+  --shadow-md: 0 6px 24px rgba(22, 48, 47, .09);
+
+  /* spacing（8px ベース） */
+  --space-1: .25rem;
+  --space-2: .5rem;
+  --space-3: .75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+
+  /* typography scale */
+  --fs-h1: clamp(1.9rem, 1.5rem + 1.7vw, 2.4rem);
+  --fs-h2: 1.45rem;
+  --fs-h3: 1.15rem;
 }
 
 * { box-sizing: border-box; }
 
-html { -webkit-text-size-adjust: 100%; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Kaku Gothic ProN",
     "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
   font-size: 17px;
-  line-height: 1.85;
-  color: var(--ink);
+  line-height: 1.8;
+  color: var(--text);
   background: #fff;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-a { color: var(--accent); }
+::selection { background: var(--accent-soft); }
+
+/* リンク（本文）：下線をオフセットしてモダンに */
+a { color: var(--accent); text-underline-offset: 2px; }
 a:hover { color: var(--accent-dark); }
 img { max-width: 100%; height: auto; }
 
-/* 共通コンテナ（本文が画面端まで伸びるのを防ぐ） */
+strong { color: var(--ink); font-weight: 700; }
+
+/* フォーカス可視化（アクセシビリティ） */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* 共通コンテナ */
 main {
   max-width: var(--maxw);
   margin: 0 auto;
-  padding: 1.75rem 1.1rem 3.5rem;
+  padding: var(--space-8) var(--space-5) var(--space-12);
 }
 
-/* 見出し */
-h1 { font-size: 1.7rem; line-height: 1.45; margin: 0 0 0.6rem; }
+/* 見出し：ウェイト＋余白で階層化。h2 は短いアクセント罫を差し色に */
+h1 {
+  font-size: var(--fs-h1);
+  font-weight: 800;
+  line-height: 1.28;
+  letter-spacing: -.01em;
+  color: var(--ink);
+  margin: 0 0 var(--space-4);
+}
 h2 {
-  font-size: 1.3rem;
-  margin-top: 2.2rem;
-  padding-bottom: 0.3rem;
-  border-bottom: 2px solid #e7f0f0;
+  font-size: var(--fs-h2);
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--ink);
+  margin: var(--space-10) 0 var(--space-4);
+  padding: 0;
+  border: 0;
 }
-h3 { font-size: 1.1rem; margin-top: 1.6rem; }
+h2::after {
+  content: "";
+  display: block;
+  width: 2.5rem;
+  height: 3px;
+  margin-top: .5rem;
+  background: var(--accent);
+  border-radius: 2px;
+}
+h3 {
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--ink);
+  margin: var(--space-8) 0 var(--space-3);
+}
+main > h1:first-child,
+h2:first-child,
+h3:first-child { margin-top: 0; }
 
-/* Markdown 記事内の表 */
+p { margin: 0 0 var(--space-4); }
+
+/* ボックス系コンポーネント内の見出しは詰める（アクセント罫も外す） */
+.cta h2, .featured h2, .affiliate-block h2, .kenri h2,
+.related-stocks h2, .related-articles h2 {
+  margin-top: 0;
+}
+.cta h2::after, .affiliate-block h2::after, .kenri h2::after,
+.related-stocks h2::after, .related-articles h2::after { display: none; }
+.affiliate-block-pharmacist h3, .kenri h2, .cta h2 { margin-top: 0; }
+
+/* Markdown 記事内の表：横罫＋ゼブラのモダン table。
+   列が多い表はモバイルで崩れるため、ブロック化して横スクロールさせる。 */
 main table {
-  border-collapse: collapse;
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   width: 100%;
-  margin: 1.1rem 0;
+  margin: var(--space-5) 0;
   font-size: 0.95rem;
+  border-collapse: collapse;
+  border-top: 1px solid var(--line-strong);
+  border-bottom: 1px solid var(--line-strong);
 }
 main th, main td {
-  border: 1px solid var(--line);
-  padding: 0.5rem 0.7rem;
+  padding: 0.6rem 0.8rem;
   text-align: left;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--line);
 }
-main th { background: var(--accent-soft); }
+main thead th {
+  background: var(--accent-soft);
+  color: var(--ink);
+  font-weight: 700;
+  border-bottom: 1px solid var(--line-strong);
+}
+main tbody tr:nth-child(even) { background: var(--accent-tint); }
 
-/* ヘッダー */
+main blockquote {
+  margin: var(--space-5) 0;
+  padding: var(--space-2) var(--space-5);
+  border-left: 3px solid var(--accent);
+  background: var(--accent-tint);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  color: var(--text);
+}
+main blockquote p:last-child { margin-bottom: 0; }
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: var(--space-10) 0;
+}
+
+/* ヘッダー：sticky＋すりガラスでモダンに */
 .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 0.5rem 1.25rem;
-  max-width: var(--maxw);
-  margin: 0 auto;
-  padding: 0.85rem 1.1rem;
+  gap: var(--space-2) var(--space-5);
+  padding: var(--space-3) var(--space-5);
+  background: rgba(255, 255, 255, .92);
+  backdrop-filter: saturate(180%) blur(10px);
+  -webkit-backdrop-filter: saturate(180%) blur(10px);
   border-bottom: 1px solid var(--line);
 }
+.site-header > * { } /* 中央寄せはコンテンツ側で */
 .site-header .brand {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  font-weight: 700;
+  gap: var(--space-2);
+  font-weight: 800;
   font-size: 1.15rem;
+  letter-spacing: -.01em;
   color: var(--ink);
   text-decoration: none;
 }
@@ -85,19 +205,29 @@ main th { background: var(--accent-soft); }
 .site-header nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.2rem 1rem;
+  align-items: center;
+  gap: var(--space-1) var(--space-2);
   margin-left: auto;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
 }
-.site-header nav a { color: var(--muted); text-decoration: none; }
-.site-header nav a:hover { color: var(--accent); }
+.site-header nav a {
+  color: var(--muted);
+  text-decoration: none;
+  padding: .4rem .55rem;
+  border-radius: var(--radius-sm);
+  line-height: 1.2;
+}
+.site-header nav a:hover {
+  color: var(--accent-dark);
+  background: var(--accent-soft);
+}
 
 /* フッター */
 .site-footer {
   border-top: 1px solid var(--line);
-  margin-top: 3rem;
-  padding: 1.75rem 1.1rem 2.5rem;
-  background: #fafbfb;
+  margin-top: var(--space-12);
+  padding: var(--space-8) var(--space-5) var(--space-10);
+  background: var(--surface);
   font-size: 0.85rem;
   color: var(--muted);
 }
@@ -105,8 +235,8 @@ main th { background: var(--accent-soft); }
 .site-footer nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.2rem 1rem;
-  margin: 0.75rem auto;
+  gap: var(--space-1) var(--space-5);
+  margin: var(--space-3) auto;
 }
-.site-footer nav a { color: var(--muted); }
-.site-footer nav a:hover { color: var(--accent); }
+.site-footer nav a { color: var(--muted); text-underline-offset: 2px; }
+.site-footer nav a:hover { color: var(--accent-dark); }

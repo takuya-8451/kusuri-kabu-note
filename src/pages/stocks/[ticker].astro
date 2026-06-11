@@ -126,33 +126,34 @@ const jsonLd = {
       font-size: 0.95rem;
     }
     th, td {
-      border: 1px solid #ddd;
-      padding: 0.5rem 0.8rem;
+      border-bottom: 1px solid var(--line);
+      padding: 0.55rem 0.8rem;
       text-align: left;
     }
     th {
-      background: #f4f7f7;
+      background: var(--accent-soft);
+      color: var(--ink);
       white-space: nowrap;
     }
     .desc {
-      color: #333;
+      color: var(--text);
     }
     .kenri {
-      border: 1px solid #b2d8d8;
-      background: #f0fafa;
-      border-radius: 8px;
+      border: 1px solid var(--accent-line);
+      background: var(--accent-soft);
+      border-radius: var(--radius);
       padding: 0.5rem 1.25rem 1rem;
-      margin: 1.5rem 0;
+      margin: var(--space-6) 0;
     }
     .kenri h2 { font-size: 1.1rem; }
     .kenri-note {
       font-size: 0.8rem;
-      color: #666;
+      color: var(--muted);
       margin-bottom: 0;
     }
     .note {
       font-size: 0.85rem;
-      color: #666;
+      color: var(--muted);
     }
   </style>
 </BaseLayout>
