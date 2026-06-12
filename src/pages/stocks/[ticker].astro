@@ -39,7 +39,7 @@ const jsonLd = {
 
 <BaseLayout
   title={`${d.name}（${d.ticker}）の配当・権利確定日｜利回り・権利確定月`}
-  description={`${d.name}（${d.ticker}・${d.sector}）の配当利回り・権利確定月、権利付最終日の調べ方、関連記事を医療セクター視点で整理。${d.description ?? ''}`}
+  description={`${d.name}（${d.ticker}・${d.sector}）の配当利回り・年間配当・権利確定月、権利付最終日や配当金の支払時期の調べ方、関連記事を医療セクター視点で整理。${d.description ?? ''}`}
 >
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   <article>
@@ -52,7 +52,13 @@ const jsonLd = {
         <tr><th>市場</th><td>{d.market}</td></tr>
         <tr><th>セクター</th><td>{d.sector}</td></tr>
         <tr><th>配当利回り</th><td>{fmtYield(d.dividendYield)}{d.dividendBasis ? `（${d.dividendBasis}）` : ''}</td></tr>
+        {d.annualDividend && (
+          <tr><th>年間配当（予想）</th><td>{d.annualDividend}</td></tr>
+        )}
         <tr><th>権利確定月</th><td>{fmtMonths(d.recordMonths)}</td></tr>
+        {d.yutai && (
+          <tr><th>株主優待</th><td>{d.yutai}</td></tr>
+        )}
         {typeof d.consecutiveDividendYears === 'number' && (
           <tr><th>連続増配年数</th><td>{d.consecutiveDividendYears}年</td></tr>
         )}
@@ -76,6 +82,10 @@ const jsonLd = {
           配当（および株主優待がある場合は優待）を受け取るには、権利確定日＝権利確定月の最終営業日の
           <strong>2営業日前にあたる「権利付最終日」</strong>までに株式を保有している必要があります。
           その翌営業日が「権利落ち日」で、この日以降に買っても今回の権利は得られません。
+        </p>
+        <p>
+          配当金そのものは、権利確定後に開かれる株主総会などでの承認を経て支払われます。目安として、期末配当は事業年度末からおおむね2〜3か月後、中間配当も中間期末から同程度の時期に支払われるのが一般的です。
+          {d.annualDividend ? `${d.name}の予想年間配当は${d.annualDividend}です。` : ''}
         </p>
         <p class="kenri-note">
           ※権利付最終日の具体的な日付は、年ごとの証券取引所の営業日カレンダーによって毎年変わります。

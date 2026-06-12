@@ -22,6 +22,8 @@ const stocks = defineCollection({
     sector: z.string(),
     dividendYield: z.number().optional(),
     dividendBasis: z.string().optional(),
+    annualDividend: z.string().optional(),
+    yutai: z.string().optional(),
     recordMonths: z.array(z.number().min(1).max(12)).optional(),
     consecutiveDividendYears: z.number().min(0).optional(),
     irUrl: z.string().url(),
